@@ -1329,13 +1329,13 @@ Robust Control:
 
 
 \chapter{Learning/Repetitive Control}
-If a robot has to repeat a given task cyclically, following the same trajectory every time, possible uncertainties in the system may be compensated by adopting learning or repetitive control schemes, by means of which the contrl system, by repeating the task, learns the optimal control input to be applied in order to have zero tracking error. There are learning or repetitive control schemes to solve 
+If a robot has to repeat a given task cyclically, following the same trajectory every time, possible uncertainties in the system may be compensated by adopting learning or repetitive control schemes, by means of which the control system, by repeating the task, learns the optimal control input to be applied in order to have zero tracking error. There exist multiple learning or repetitive control schemes, aimed to solve 
 \begin{itemize}
     \item trajectory tracking problems 
     \item control to steady state configurations.
 \end{itemize}
 % [TODO] insert ff control scheme slide 4 
-Two control actions: 
+Based on two control actions: 
 \begin{itemize}
     \item feedback, based on the error $e=y_d-y$ 
     \item feedforward, updated at each iteration
@@ -1345,14 +1345,16 @@ Two control actions:
 \section{PD control without gravity compensation}
 Let us consider the following case:
 \begin{itemize}
-    \item Control to arbitrary constant (equilibrium) configuration of a robot subject to gravity \begin{itemize}
-            \item without explicit knowledge of the dynamic coefficients and of the gravity term
-            \item without using "high gain" position control terms
-        \end{itemize}
-    \item Use of an iterative control scheme based on \begin{enumerate}
-            \item PD control on the joint position error + constant compensation (ff) term 
-            \item iterative update of the ff term at each steady-state intermediate condition
-        \end{enumerate}
+    \item Control to arbitrary constant (equilibrium) configuration of a robot subject to gravity
+    \begin{itemize}
+        \item without explicit knowledge of the dynamic coefficients and of the gravity term
+        \item without using "high gain" position control terms
+    \end{itemize}
+    \item Use of an iterative control scheme based on
+    \begin{enumerate}
+        \item PD control on the joint position error + constant compensation (ff) term 
+        \item iterative update of the ff term at each steady-state intermediate condition
+     \end{enumerate}
 \end{itemize}
 Assumptions: 
 \begin{itemize}
@@ -1393,7 +1395,7 @@ If the following conditions:
     \item $\lambda_{min}(K_p)\geq \alpha$
     \item  $0<\beta\leq 0.5$
 \end{enumerate}
-hold, then the sequence $\{q_0,\bar{q}_1,\bar{q}_2,\dots\}$ converges to $q_d$ from any initial condition ($q_0,\dot{q}_0$) (\emph{global convergence})
+hold, then the sequence $\{q_0,\bar{q}_1,\bar{q}_2,\dots\}$ converges to $q_d$ from any initial condition ($q_0,\dot{q}_0$) (\emph{global convergence}).\\
 Condition (1) is sufficient for guaranteeing the global asymptotic stability (a unique equilibrium point exists for the closed loop system) with the control law. The additional sufficient condition (2) guarantees the convergence of the iterative scheme and in particular that 
 \[
     \lim_{i\to\infty} u_i = g(q_d)
@@ -1407,7 +1409,7 @@ from the update law we have
 \[
     \|u_i-u_{i-1}\| = \displaystyle\frac{1}{\beta}\|K_p\tilde{q}_i\|
 \]
-By combining the above relations, and taking advantage of condition 1. we get 
+By combining the above relations, and taking advantage of condition (1) we get 
 \[
     \displaystyle\frac{1}{\beta}\alpha \|\tilde{q}_i\| \leq \displaystyle\frac{1}{\beta}\lambda_{min}(K_p)\|\tilde{q}_i\| \leq \displaystyle\frac{1}{\beta}\|K_p\tilde{q}_i\| \leq \alpha(\|\tilde{q}_i\|+\|\tilde{q}_{i-1}\|)
 \]
@@ -1415,32 +1417,33 @@ which means that
 \[
     \displaystyle\frac{1}{\beta} \|\tilde{q}_i\| \leq (\|\tilde{q}_i\|+\|\tilde{q}_{i-1}\|)
 \]
-which can be rewritten as 
+and can be rewritten as 
 \[
     \|\tilde{q}_i\| < \displaystyle\frac{\beta}{1-\beta}\|\tilde{q}_{i-1}\|
 \]
-which because of condition 2 is a contraction mapping, and therefore 
+which is a contraction mapping, because of condition (2), and therefore 
 \[
     \lim_{i\to\infty} \|\tilde{q}_i\|=0
 \]
-with asymptotic convergence from any initial condition. 
+witch asserts asymptotic convergence from any initial condition. 
 \subsubsection{comments}
 \begin{itemize}
-    \item By sobstitution of condtions 1. and 2. in the control law, we have that the matrix defining the proportional gains becomes 
+    \item By sobstitution of condtions (1) and (2) in the control law, we have that the matrix defining the proportional gains becomes 
         \[
             \hat{K}_p=K_p/\beta \implies \lambda_{min}(\hat{K}_p)>2\alpha
         \]
     \item if $K_p$ is a diagonal matrix, this condition implies a lower bound for each element of the diagonal 
     \item It is a sufficient condition: the scheme could converge even if it is not satisfied 
-    \item The overall scheme can be interpreted as a control law with an integral action updated in correspondence of a discrete sequence of time instants (each steady state), achieving GAS
+    \item The overall scheme can be interpreted as a control law with an integral action updated in correspondence of a discrete sequence of time instants (each steady state), achieving GAS.
 \end{itemize}
 \subsection{Final comments}
 \begin{itemize}
     \item convergence is achieved in few iterations 
     \item  the condition on the proportional gain is sufficient: the system might converge even if it is violated 
-    \item it is possible, with a more detailed analysis to determine lower bounds on the gains $K_{p,j}$ with a smaller value but still sufficient to guarantee stability 
+    \item it is possible, with a more detailed analysis, to determine lower bounds on the gains $K_{p,j}$ with a smaller value but still sufficient to guarantee stability 
     \item it is reasonable to assume that these values are lower for the distal links of the robot 
-    \item in practical cases, the update of the control law is performed the robot is sufficiently close to a steady state condition 
+    \item in practical cases, the update of the control law is performed uniquely the robot is sufficiently close to a steady state condition
+    % todo: check the condition in which control law is performed in practical cases: while (?), whilst (?), solely (?), uniquely (?)
     \item this approach has been extended to the case of flexible (joints and/or links) robot arms
 \end{itemize}
 
@@ -1451,7 +1454,8 @@ Accurate control can be achieved only if the control system encapsulates (either
 
 Once the controlled system contains an internal model of the signal to be tracked, and \emph{the overall system is stabilized}, perfect tracking is achieved. 
 \subsection{Fourier Decomposition and IMP}
-Since our initial hypothesis states that we have to deal with periodic reference signals of known period $\tau$, let's see how these signals can be modelled and how we can connect them with the IMP idea: 
+Since our initial hypothesis states that we have to deal with periodic reference signals of known period $\tau$, let's see how these signals can be modelled and how we can connect them with the IMP idea:
+% todo: check if IMP means "Iterative Motion Planning" or anything else, and explain it
 
 The Fourier Decomposition Theorem states that any periodic function (or periodic signal) can be decomposed into the sum of a (possibly infinite) set of simple oscillating functions represented by sines and cosines. 
 
@@ -1472,7 +1476,7 @@ A system with this dynamic characterization is called \emph{Repetitive Compensat
 % [TODO] insert scheme slide 17 
 It generates any periodic signal of period $\tau$ (with a suitable initial function stored in the delay block). It works as the internal model for periodic signals of period $\tau$. The pure delay present in the positive feedback loop implements the dynamic system with the desired poles on the imaginary axis. 
 
-The repetitive compensator presents a closed loop trasnfer function 
+The repetitive compensator presents a closed loop transfer function 
 \[
     \displaystyle\frac{e^{-\tau s}}{1-e^{-\tau s}}
 \]
@@ -1489,10 +1493,10 @@ from which
     \sigma = 0 \\
     \omega = \displaystyle\frac{2k\pi}{\tau} = k \omega_\tau, \quad k \text{ integer}
 \end{gather*}
-Thus exactly the infinite number of poles palced where needed. This proves that the repetitive compensator acts as internal model for any periodic signal of period $\tau$. Stability analysis is necessary to evaluate the functionality of the scheme. 
+Thus exactly the infinite number of poles placed where needed. This proves that the repetitive compensator acts as internal model for any periodic signal of period $\tau$. Stability analysis is necessary to evaluate the functionality of the scheme. 
 
 \subsection{Nyquist-Driven Stability Analysis}
-In order to analyse the stabilty properties, we can consider the following system which has the same characteristic equations (and consequently the same poles) of the previous one. As a matter of fact, the overall transfer fucntion is given by 
+In order to analyse the stabilty properties, we can consider the following system which has the same characteristic equations (and consequently the same poles) of the previous one. As a matter of fact, the overall transfer function is given by 
 \[
     G_0(s) = \displaystyle\frac{e^{-\tau s}(P(s)) }{1+e^{-\tau s}(P(s)-1)}
 \]
@@ -1512,13 +1516,13 @@ The criterion states that the closed loop system with open loop tf $L(s)$ (stabl
 \begin{itemize}
     \item The polar plot can be constructed by evaluating on the complex plane the image of $L(jw)$ parametrized for $w$ ranging from 0 to $+\infty$ and then closing the plot in a specular way about the real axis 
     \item the overall plot will always form a closed curve because it derives from a mapping that has a closd curve as domain (called \emph{Nyquist Path}) 
-    \item The Nyquist path is a curve that has as interior the whole right half plane 
+    \item The Nyquist path is a curve that has the whole right half plane as its interior
 \end{itemize}
-If the loop transfer function is not rational but contains some delay term it is still worth to apply the Nyquist criterion for stability analysis of the closed loop systems. Let us consider a system with loop transfer function 
+If the loop transfer function is not rational but contains some delay term, it is still worth applying the Nyquist criterion to analize the stability of the closed loop systems. Let us consider a system with loop transfer function 
 \[
     L(s) = e^{-\delta s} L'(s)
 \]
-The greater the value of the delay $\delta$, the greater the negative phase shift. This behaviour can easily cause instability in the closed loop system. The polar plot of such a system presents rotational behaviour with increasing speed with growing values of $\omega$. A very important corollary of the Nyquist criterion that will be used in the following states that a sufficient condition for stability of the closed loop system is 
+The greater the value of the delay $\delta$, the greater the negative phase shift. This behaviour can easily cause instability in the closed loop system. The polar plot of such a system presents rotational behaviour with increasing speed, with growing values of $\omega$. A very important corollary of the Nyquist criterion that will be used in the following states that a sufficient condition for stability of the closed loop system is 
 \[
     |L(j\omega)|<1 \quad \forall \omega
 \]
@@ -1526,9 +1530,10 @@ By applying the Nyquist Criterion to the RC scheme, it follows that a sufficient
 \[
     \|P(j\omega)-1\| < 1 \quad \forall \omega
 \]
-This condition is never satisfied unless P is biproper (rel degree 0). However, it requires too much: tracking arbitrary periodic signals (even discontinuous ones).
+This condition is never satisfied unless P is biproper (rel degree 0). However, it requires too much effort: tracking arbitrary periodic signals (even discontinuous ones).
 \subsubsection{Possible Remedies}
-The nonexistence of a repetitive controller for a strictly proper pant is not surprsing: if $P(s)$ has non null relative degee it "integrates" the input at least once, and hence the output will be smoothed out to some extent making it impossible to track a signal with an infintely sharp edge. To overcome this problem two solutions have been found:
+The nonexistence of a repetitive controller for a strictly proper pant is not surprising: if $P(s)$ has non null relative degee it "integrates" the input at least once, and hence the output will be smoothed out to some extent making it impossible to track a signal with an infinitely sharp edge. To overcome this problem two solutions have been found:
+% pant ?, also non-null non-zero ??, 
 \begin{enumerate}
     \item Introduction of a filter in the delay (often called Modified Repetitive Control Scheme)
     \item Make it a discrete time system, that provides a natural upper bound to the maximum meaningful frequency value 
@@ -1561,7 +1566,7 @@ from which
 Thus exactly N poles on the unit circle in the z-plane. In discrete time signal analysis these poles represent the simple oscillation modes whose linear combination can produce any periodic signal of period N (Discrete Fourier Decomposition). This proves that the discrete time repetitive compensator acts as internal model for any periodic signal of period N. 
 Note that tracking is only achievable at the sample points. 
 
-Repetitive Control applied in a nonlinear system framework has been studied and in some cases satisfactory results have been achieved. Since in most industrial robotics applications cyclic operations are needed, RC can be a robust solution for the accomplishment of these tasks considering the lack of knowledge of the parameters can be seen as a periodic disturbance as the reference is periodic. 
+Repetitive Control applied in a nonlinear system framework has been studied and in some cases satisfactory results have been achieved. Since in most industrial robotics applications cyclic operations are needed, RC can be a robust solution for the accomplishment of these tasks, considering the lack of precise knowledge of the parameters as a periodic disturbance, given that the task and its reference are periodic. 
 
 
 \chapter{Force Control}
