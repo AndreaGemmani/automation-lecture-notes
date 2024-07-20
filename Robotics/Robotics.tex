@@ -384,7 +384,7 @@ we choose $\dot{q}=J^TKe$, leading to:
 \subsection{Manipulability Measures}
 The Jacobian may be used to evaluate the achievable performaces of a manipulator, in terms of velocities and applicable forces, through the \emph{manipulability ellipsoids}
 \subsubsection{Velocity manipulability ellipsoids}
-Given a sphere with unit radius radius in the joint velocity space, $\dot{q}^T\dot{q}=1$, that may be considered as a"cost" (energy input to the manipulator), we want to obtain its equivalent expression in the work-space. From $\dot{x}=J(q)\dot{q}$ we obtain:
+Given a sphere with unit radius in the joint velocity space, $\dot{q}^T\dot{q}=1$, that may be considered as a"cost" (energy input to the manipulator), we want to obtain its equivalent expression in the work-space. From $\dot{x}=J(q)\dot{q}$ we obtain:
 \begin{gather*}
     \dot{q}=J^\dagger \dot{x}\\
     \implies \dot{x} J^{\dagger T}J^\dagger\dot{x}=1\\
@@ -416,19 +416,19 @@ Dymanics of a robot manipulator: analysis of the relationship between the applie
         \]
         and then
         \[
-            \dot{q}=int \ddot{q} dy \qquad q= \int qdot{q}dt
+            \dot{q}= \int \ddot{q} dy \qquad q= \int q \dot{q}dt
         \]
     \item Inverse model: given the desired joint acceleration, velocity and position, compute the corresponding force/torque to be applied
         \[
             \tau = f^{-1}(\ddot{q},\dot{q},q)=g(\ddot{q},\dot{q},q)
         \]
 \end{itemize}
-In deriving the dynamic model of a robot, we refer to a chain of rigid bodies mutually, and ideally, connected among them
+In deriving the dynamic model of a robot, we refer to a chain of rigid bodies mutually, and ideally, connected among them.
 The dynamic model of a robot is used for:
 \begin{itemize}
     \item simulation: testing motion behaviour without resorting to physical experiments
     \item analysis and synthesis of control laws
-    \item alaysis of the structural properties of a manipulator in the design phase
+    \item analysis of the structural properties of a manipulator in the design phase
 \end{itemize}
 
 
@@ -436,7 +436,7 @@ The dynamic model of a robot is used for:
 \section{Euler-Lagrange model}
 The dynamic model obtained through this method is simpler and more intuitive, and also better suited to understanding the effects of changes in the mechanical parameters. The links are considered altogether, and the model is obtained analytically. Drawbacks: the model is obtained starting from the kinetic and potential energies (non intuitive) and the model is not computationally efficient.
 
-Lagrange coordinates: independet variables used to describe the position of rigid bodies in space. For the same physical system, several choices of Lagrangian coordinates are usually possible. In robotics, we use \emph{joint variables} $q_1,q_2,\dots,q_n$. Input torques should be defined according to the chosen Lagrangian coordinates $\implies$ joint torques $\tau_1,\tau_2,\dots,\tau_n$ 
+Lagrange coordinates: independet variables used to describe the position and orientation of rigid bodies in space. For the same physical system, several choices of Lagrangian coordinates are usually possible. In robotics, we use \emph{joint variables} $q_1,q_2,\dots,q_n$. Input torques should be defined according to the chosen Lagrangian coordinates $\implies$ joint torques $\tau_1,\tau_2,\dots,\tau_n$ 
 
 From physics, we know it is possible to define:
 \begin{itemize}
@@ -447,7 +447,7 @@ And therefore the Lagrangian function
 \[
     \mathcal{L}(q\dot{q})=K(q,\dot{q})-P(q)
 \]
-The EEuler-Lagrange equations for a system described by $n$ Lagrange coordinates $q_i$ are
+The Euler-Lagrange equations for a system described by $n$ Lagrange coordinates $q_i$ are
 \[
     \psi_i=\frac{d}{dt}\left(\frac{\partial \mathcal{L}}{\partial \dot{q}_i}\right) - \frac{\partial \mathcal{L}}{\partial q_i} \qquad i=1,\dots,n
 \]
@@ -485,13 +485,13 @@ by measuring along a proper trajectory the quantities $q,\dot{q},\ddot{q}, \tau$
     \alpha = (Y_0^TY_0)^{-1}Y_0^T\tau_0=Y_0^\dag \tau_0
 \end{gather*}
 \subsection{Dynamic model in simulink}
-When only one of the two of the joints has friction energy still leaks out of the system because the system is coupled so movement of each link affects the other link causing the energy to be lost.
+Even if only one of the two joints experiences friction, energy still leaks from the system. This occurs because the system is coupled, meaning that the movement of each link affects the other, resulting in energy loss.
 \subsection{Linearization of the Euler-Lagrange model}
 By neglecting friction effects ($D=0$), and considering the vector $C(q,\dot{q})\dot{q} = c(q,\dot{q})$, the non linear dynamic model of a robot manipulator is:
 \[
     M(q)\ddot{q}+c(q,\dot{q})+g(q)=u
 \]
-It is possible to obtain a linear dynamic model which is valid only locally around a ginven operative condition (not used, very bad, uselss, stupid, why even bother):
+It is possible to obtain a linear dynamic model which is valid only locally around a given operative condition (not used, very bad, uselss, stupid, why even bother):
 \begin{itemize}
     \item linearization around a (constant) equilibrium state 
     \item linearization along a (nominal, time-varying) equilibrium trajectory
@@ -543,7 +543,7 @@ The dynamic equations are written separately for each link and a \emph{recursive
         where $m$ is mass, $v$ is the linear velocity, $f$ the sum of all the applied external forces and $mv$ the momentum. Since in robotics the masses of the links are constant (and considered as concentrated in the center of mass) we have the well known Newton equation $f=ma=m\ddot{p}_C$
     \item Euler's law of motion(conservation of the angular momentum $L=I\omega$)
         \[
-            \ni = \frac{d(^0I^0\omega}{dt}
+            \ni = \frac{d(^0I^0\omega)}{dt}
         \]
         where $^0I$ is the moment of inertia (rotational inertia) expressed in an inertial frame FF0 placed in the center of mass, $^0\omega$ the rotational veolcity, $\tau$ the sum of the torques applied to the rigid body.
 \end{itemize}
@@ -596,7 +596,7 @@ Overall algorithm
 This algorithm allows for a variety of useful outputs: slide 113
 
 \section{Dynamic model in the work-space}
-It may be of interest to obtain the dynamic model in the work-space and not in the joint-space. For the sake of simplicity, let us consider a 6 dof manipulator, not in a singualr configuration.
+It may be of interest to obtain the dynamic model in the work-space and not in the joint-space. For the sake of simplicity, let us consider a 6 dof manipulator, not in a singular configuration.
 Since $M(q)\ddot{q}+C(q,\dot{q})\dot{q}+D\dot{q}+g(q) = \tau + J(q)^TF_a$, then 
 \[
     \ddot{q} = M^{-1}(q)\left[\tau+J^T(q)F_a-C(q,\dot{q})\dot{q}-D\dot{q}-g(q)\right]
@@ -622,7 +622,7 @@ Control problem: definition of the input signals for the joints (e.g. torques or
 \begin{itemize}
     \item the many control techniques available to solve such a problem
     \item the hardware used to implement the control algorithms
-    \item the mechanical configuration of the robot (anthropomorphic, cartesia, ...)
+    \item the mechanical configuration of the robot (anthropomorphic, cartesian, ...)
 \end{itemize}
 The robot performances are mainly influeneced by the mechanical design and by the actuation system. For example, gearboxes "decouple" the load from the motor (disturbances on the load are diminished towards the motor through the gearbox), however they usually introduce non linear effects such as dead-zones, friction, elasticity,...; Direct Drive motors (can provide high torque with low speed without reduction gears) ensure better performances and do not introduce non-linearities in the transmission chain; however a more relevant dynamic coupling between joints is present.
 
@@ -645,7 +645,7 @@ Dynamic model of a manipualator:
     M(q)\ddot{q}+C(q,\dot{q})\dot{q}+D\dot{q}+g(q) = \tau + J^T(q)F_a
 \]
 Control problem: define the generalized forces $\tau$ to be applied to the joints in order to obtain a desired trajectory $q_d(t)$\\
-In non-linear control schemes it is best to choose a sampling frequency as large as possible
+In non-linear control schemes it is best to choose a sampling frequency as large as possible.
 
 \section{Decentralized position control}
 Actuators: velocities $\omega_m(t)$, positions $q_m$, torques $\tau_m(t)$\\
@@ -701,8 +701,8 @@ Possible solution: PI controller
     C(s)=  K_c\frac{1+sT_c}{s}
 \]
 \subsection{possible control scheme}
-A cascade configuration can be employed
-If inertia is constant, current control implies acceleration control as torque is directly proportional to acceleration.\\
+A cascade configuration can be employed.\\
+If inertia is constant, current control implies acceleration control, as torque is directly proportional to acceleration.\\
 In robotics (and in general in motion control systems), feedwarward control actions are usually adopted with very positive results: 
 \begin{itemize}
     \item velocity ff action
